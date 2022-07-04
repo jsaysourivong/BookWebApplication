@@ -2,20 +2,23 @@
 using BookWebApp.Models;
 using Microsoft.AspNetCore.Mvc;
 
-namespace BookWebApp.Controllers
+namespace BookWebApp.Controllers;
+public class CategoryController : Controller
 {
-    public class CategoryController : Controller
-    {
-        private readonly ApplicationDbContext _db;
+    private readonly ApplicationDbContext _db;
 
-        public CategoryController(ApplicationDbContext db)
-        {
-            _db = db;
-        }
-        public IActionResult Index()
-        {
-            IEnumerable<Category> objCategoryList = _db.Categories;
-            return View(objCategoryList);
-        }
+    public CategoryController(ApplicationDbContext db)
+    {
+       _db = db;
+    }
+    public IActionResult Index()
+     {
+       IEnumerable<Category> objCategoryList = _db.Categories;
+       return View(objCategoryList);
+    }
+    public IActionResult Create()
+    {
+       return View();
     }
 }
+
