@@ -5,25 +5,26 @@ using BookWeb.DataAccess.Repository.IRepository;
 using BookWeb.Models;
 using Microsoft.AspNetCore.Mvc;
 
-namespace BookWebApp.Controllers;
+namespace BookWebApp.Areas.Admin.Controllers;
+[Area("Admin")]
 public class CategoryController : Controller
 {
-    private readonly IUnitOfWork  _unitOfWork;
+    private readonly IUnitOfWork _unitOfWork;
 
     public CategoryController(IUnitOfWork unitOfWork)
     {
         _unitOfWork = unitOfWork;
     }
     public IActionResult Index()
-     {
+    {
         IEnumerable<Category> objCategoryList = _unitOfWork.Category.GetAll(); ;
-       return View(objCategoryList);
+        return View(objCategoryList);
     }
 
     // GET
     public IActionResult Create()
     {
-       return View();
+        return View();
     }
 
     // POST
@@ -39,7 +40,7 @@ public class CategoryController : Controller
         {
             _unitOfWork.Category.Add(obj);
             _unitOfWork.Save();
-            TempData["success"] = "Category created sucessfully";   
+            TempData["success"] = "Category created sucessfully";
             return RedirectToAction("Index");
         }
         return View(obj);
@@ -48,20 +49,20 @@ public class CategoryController : Controller
     // GET
     public IActionResult Edit(int? id)
     {
-        if(id == null || id == 0)
+        if (id == null || id == 0)
         {
             return NotFound();
         }
 
         // The three lines of code following this commenta are three ways you can retreive a category from the database using the primary key
         //var categoryFromDb = _db.Categories.Find(id);
-        var categoryFromDbFirst = _unitOfWork.Category.GetFirstOrDefault(u=>u.Id == id);
+        var categoryFromDbFirst = _unitOfWork.Category.GetFirstOrDefault(u => u.Id == id);
         //var categoryFromDbSingle = _db.Categories.SingleOrDefault(u => u.Id == id);
 
-        if(categoryFromDbFirst == null)
+        if (categoryFromDbFirst == null)
         {
-            return NotFound(); 
-        }            
+            return NotFound();
+        }
 
         return View(categoryFromDbFirst);
     }
@@ -95,7 +96,7 @@ public class CategoryController : Controller
 
         // The three lines of code following this commenta are three ways you can retreive a category from the database using the primary key
         //var categoryFromDb = _db.Categories.Find(id);
-        var categoryFromDbFirst = _unitOfWork.Category.GetFirstOrDefault(u=>u.Id == id);
+        var categoryFromDbFirst = _unitOfWork.Category.GetFirstOrDefault(u => u.Id == id);
         //var categoryFromDbSingle = _db.Categories.SingleOrDefault(u => u.Id == id);
 
         if (categoryFromDbFirst == null)
