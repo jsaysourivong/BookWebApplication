@@ -9,7 +9,8 @@ namespace BookWeb.DataAccess
         {
         }
 
-        //Create a category table with the name categories
+        //Create a category table
         public DbSet<Category> Categories { get; set; }
+        public DbSet<CoverType> CoverTypes { get; set; }
     }
 }
