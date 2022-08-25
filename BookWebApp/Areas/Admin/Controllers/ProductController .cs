@@ -4,6 +4,7 @@ using BookWeb.DataAccess.Repository;
 using BookWeb.DataAccess.Repository.IRepository;
 using BookWeb.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace BookWebApp.Areas.Admin.Controllers;
 [Area("Admin")]
@@ -25,9 +26,24 @@ public class ProductController : Controller
     public IActionResult Upsert(int? id)
     {
         Product product = new();
+        // SelectListItem is for a dropdown
+        IEnumerable<SelectListItem> CategoryList = _unitOfWork.Category.GetAll().Select(
+            u => new SelectListItem
+            {
+                Text = u.Name,
+                Value = u.Id.ToString()
+            });
+        IEnumerable<SelectListItem> CoverTypeList = _unitOfWork.CoverType.GetAll().Select(
+            u => new SelectListItem
+            {
+                Text = u.Name,
+                Value = u.Id.ToString()
+            });
+
         if (id == null || id == 0)
         {
             // create product
+            ViewBag.CategoryList = CategoryList;
             return View(product);
         }
         else
