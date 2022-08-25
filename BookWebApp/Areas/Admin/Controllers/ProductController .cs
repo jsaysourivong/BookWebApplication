@@ -3,6 +3,7 @@ using BookWeb.DataAccess;
 using BookWeb.DataAccess.Repository;
 using BookWeb.DataAccess.Repository.IRepository;
 using BookWeb.Models;
+using BookWeb.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
@@ -25,32 +26,34 @@ public class ProductController : Controller
     // GET
     public IActionResult Upsert(int? id)
     {
-        Product product = new();
-        // SelectListItem is for a dropdown
-        IEnumerable<SelectListItem> CategoryList = _unitOfWork.Category.GetAll().Select(
-            u => new SelectListItem
+         ProductViewModel productViewModel = new()
+        {
+            Product = new(),
+            CategoryList = _unitOfWork.Category.GetAll().Select(i => new SelectListItem
             {
-                Text = u.Name,
-                Value = u.Id.ToString()
-            });
-        IEnumerable<SelectListItem> CoverTypeList = _unitOfWork.CoverType.GetAll().Select(
-            u => new SelectListItem
+                Text = i.Name,
+                Value = i.Id.ToString()
+            }),
+            CoverTypeList = _unitOfWork.CoverType.GetAll().Select(i => new SelectListItem
             {
-                Text = u.Name,
-                Value = u.Id.ToString()
-            });
+                Text = i.Name,
+                Value = i.Id.ToString()
+            })
+        };
+
 
         if (id == null || id == 0)
         {
             // create product
-            ViewBag.CategoryList = CategoryList;
-            return View(product);
+/*          ViewBag.CategoryList = CategoryList;
+            ViewData["CoverTypeList"] = CoverTypeList;*/
+            return View(productViewModel);
         }
         else
         {
             // update product
         }
-        return View(id);   
+        return View(productViewModel);   
     }
 
     // POST
